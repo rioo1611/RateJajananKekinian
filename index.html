@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RateJajanan - Peta Interaktif & Review Kuliner Kaki Lima</title>
+  <meta name="description" content="Peta interaktif dan ulasan jujur kuliner jajanan kaki lima terbaik: Cilok, Batagor, dan Seblak legendaris serta viral di kota kalian!">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Leaflet CSS for Interactive Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="container announcement-content">
+      <span>🔥 <strong>Tugas Kelompok Kuliner Kaki Lima:</strong> Review Jujur & Peta Interaktif Cilok, Batagor & Seblak Terenak!</span>
+      <a href="#tim-kami" class="badge-link"><i class="fa-solid fa-users"></i> Tim Pengembang</a>
+    </div>
+  </div>
+
+  <!-- Header & Navigation Bar -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#" class="logo">
+        <span class="logo-icon">🍢</span>
+        <div class="logo-text">
+          <span class="brand-name">Rate<span class="highlight">Jajanan</span></span>
+          <span class="brand-tagline">Kaki Lima Juara</span>
+        </div>
+      </a>
+
+      <!-- Search in Nav (Desktop) -->
+      <div class="nav-search">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="quick-search" placeholder="Cari cilok, batagor, seblak, atau nama jalan...">
+      </div>
+
+      <nav class="nav-links">
+        <a href="#peta-section" class="nav-link"><i class="fa-solid fa-map-location-dot"></i> Peta Kuliner</a>
+        <a href="#katalog-section" class="nav-link"><i class="fa-solid fa-utensils"></i> Ulasan Jajanan</a>
+        <a href="#rekomendasi-section" class="nav-link"><i class="fa-solid fa-award"></i> Top 3 Juara</a>
+        <a href="#tim-kami" class="nav-link"><i class="fa-solid fa-user-group"></i> Tim Kelompok</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Bookmark / Wishlist Button -->
+        <button id="bookmark-filter-btn" class="btn-icon" title="Lihat Jajanan Disimpan" aria-label="Jajanan Disimpan">
+          <i class="fa-solid fa-heart"></i>
+          <span class="badge-count" id="bookmark-count">0</span>
+        </button>
+
+        <!-- Add Review Button -->
+        <button id="open-add-modal-btn" class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i>
+          <span>Tambah Jajanan</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Buka Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-badge">
+        <i class="fa-solid fa-fire-flame-curved"></i> Ekspedisi Kuliner Kaki Lima
+      </div>
+      <h1 class="hero-title">
+        Berburu <span class="text-gradient">Cilok, Batagor & Seblak</span> Terenak di Kota Kamu!
+      </h1>
+      <p class="hero-subtitle">
+        Temukan kedai dan gerobak legendaris dengan bumbu kacang kental, kuah seblak medok pedas nampol, serta tekstur kenyal sempurna lewat peta interaktif & ulasan mendalam komunitas.
+      </p>
+
+      <!-- Hero Action Bar -->
+      <div class="hero-actions">
+        <a href="#peta-section" class="btn btn-hero-primary">
+          <i class="fa-solid fa-map-pin"></i> Jelajahi di Peta
+        </a>
+        <a href="#katalog-section" class="btn btn-hero-secondary">
+          <i class="fa-solid fa-list-check"></i> Baca Review Lengkap
+        </a>
+      </div>
+
+      <!-- Quick Metrics Stats -->
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-number" id="total-spots-stat">30+</span>
+          <span class="stat-label">Spot Jajanan Terkurasi</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">4.8★</span>
+          <span class="stat-label">Rata-rata Rasa Bintang 5</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">3 Kota</span>
+          <span class="stat-label">Bandung, Jakarta, Jogja</span>
+          <span class="stat-number">Nusantara</span>
+          <span class="stat-label">Jajanan Khas Indonesia</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Jujur & Tanpa Endorse</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter & Controls Section -->
+  <section class="filter-section" id="filter-bar">
+    <div class="container">
+      <div class="filter-card">
+        <!-- Category Buttons -->
+        <div class="category-pills">
+          <button class="cat-pill active" data-category="semua">
+            <span>✨</span> Semua Jajanan
+          </button>
+          <button class="cat-pill" data-category="cilok">
+            <span>🍢</span> Cilok
+          </button>
+          <button class="cat-pill" data-category="batagor">
+            <span>🥟</span> Batagor
+          </button>
+          <button class="cat-pill" data-category="seblak">
+            <span>🍜</span> Seblak
+          </button>
+        </div>
+
+        <!-- Filter Dropdowns & Toggles -->
+        <div class="filter-controls">
+          <!-- City Filter -->
+          <div class="control-group">
+            <label for="city-filter"><i class="fa-solid fa-location-dot"></i> Kota:</label>
+            <label for="city-filter"><i class="fa-solid fa-location-dot"></i> Kota / Daerah:</label>
+            <select id="city-filter" class="form-select">
+              <option value="semua" selected>Semua Kota (30 Spot)</option>
+              <option value="Bandung">Bandung (10 Spot)</option>
+              <option value="Jakarta">Jakarta (10 Spot)</option>
+              <option value="Yogyakarta">Yogyakarta (10 Spot)</option>
+              <option value="semua" selected>Seluruh Indonesia (Semua Spot)</option>
+              <option value="semua" selected>Semua Kota</option>
+              <option value="Bandung">Bandung</option>
+              <option value="Jakarta">Jakarta</option>
+              <option value="Yogyakarta">Yogyakarta</option>
+              <option value="Surabaya">Surabaya</option>
+              <option value="Malang">Malang</option>
+              <option value="Garut">Garut</option>
+              <option value="Bogor">Bogor</option>
+              <option value="Semarang">Semarang</option>
+            </select>
+          </div>
+
+          <!-- Spicy Level Filter -->
+          <div class="control-group">
+            <label for="spicy-filter"><i class="fa-solid fa-pepper-hot"></i> Level Pedas:</label>
+            <select id="spicy-filter" class="form-select">
+              <option value="semua">Semua Level Pedas</option>
+              <option value="0">Level 0 (Manis / Gurih)</option>
+              <option value="1-2">Level 1 - 2 (Sedang)</option>
+              <option value="3-5">Level 3 - 5 (Pedas Nampol 🌶️)</option>
+            </select>
+          </div>
+
+          <!-- Sort Order -->
+          <div class="control-group">
+            <label for="sort-filter"><i class="fa-solid fa-arrow-down-wide-short"></i> Urutkan:</label>
+            <select id="sort-filter" class="form-select">
+              <option value="rating-desc">Rating Tertinggi ★</option>
+              <option value="price-asc">Harga Termurah (Rp)</option>
+              <option value="reviews-desc">Paling Banyak Diulas</option>
+            </select>
+          </div>
+
+          <!-- Reset Filter Button -->
+          <button id="reset-filter-btn" class="btn btn-outline" title="Reset Filter">
+            <i class="fa-solid fa-rotate-left"></i> Reset
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobile View Switcher (Tab: Peta vs Daftar) -->
+  <div class="mobile-view-switcher container">
+    <button class="view-btn active" id="tab-split-view">
+      <i class="fa-solid fa-table-columns"></i> Split
+    </button>
+    <button class="view-btn" id="tab-map-view">
+      <i class="fa-solid fa-map-location-dot"></i> Hanya Peta
+    </button>
+    <button class="view-btn" id="tab-list-view">
+      <i class="fa-solid fa-list"></i> Hanya Ulasan
+    </button>
+  </div>
+
+  <!-- Main Content: Interactive Map & Feed Cards Split Layout -->
+  <main class="main-content container" id="peta-section">
+    <div class="split-layout" id="split-layout">
+      
+      <!-- Left Column: Interactive Map -->
+      <aside class="map-column" id="map-column">
+        <div class="map-wrapper">
+          <div class="map-header">
+            <div class="map-title-wrap">
+              <span class="pulse-dot"></span>
+              <h3>Peta Lokasi Jajanan</h3>
+            </div>
+            <div class="map-controls-inline">
+              <button id="recenter-map-btn" class="btn-map-tool" title="Reset Posisi Peta">
+                <i class="fa-solid fa-crosshairs"></i> Fokus Kota
+              </button>
+              <span class="map-counter-badge" id="map-spots-count">30 Titik Ditemukan</span>
+              <span class="map-counter-badge" id="map-spots-count">Memuat Titik...</span>
+            </div>
+          </div>
+          
+          <!-- The Leaflet Map Container -->
+          <div id="map"></div>
+
+          <!-- Map Legend -->
+          <div class="map-legend">
+            <div class="legend-item"><span class="legend-color legend-cilok"></span> Cilok 🍢</div>
+            <div class="legend-item"><span class="legend-color legend-batagor"></span> Batagor 🥟</div>
+            <div class="legend-item"><span class="legend-color legend-seblak"></span> Seblak 🍜</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Catalog Feed Cards -->
+      <section class="feed-column" id="katalog-section">
+        <div class="feed-header">
+          <div>
+            <h2 class="feed-title">Daftar Review & Rekomendasi Jajanan</h2>
+            <p class="feed-subtitle" id="results-count-text">Menampilkan 30 spot jajanan terbaik</p>
+            <p class="feed-subtitle" id="results-count-text">Memuat ulasan jajanan...</p>
+          </div>
+          <div class="active-tag-pills" id="active-tag-pills"></div>
+        </div>
+
+        <!-- Jajanan Grid Cards Container -->
+        <div class="jajanan-grid" id="jajanan-grid">
+          <!-- Dynamically populated by script.js -->
+        </div>
+
+        <!-- Empty State (When no filter results match) -->
+        <div class="empty-state" id="empty-state" style="display: none;">
+          <div class="empty-icon">🍜🔍</div>
+          <h3>Ups, Jajanan Tidak Ditemukan!</h3>
+          <p>Coba ganti kata kunci pencarian atau ubah filter level pedas dan kota kamu.</p>
+          <button class="btn btn-primary" id="empty-reset-btn">Reset Semua Filter</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Top 3 Juara Spotlight Section -->
+  <section class="spotlight-section" id="rekomendasi-section">
+    <div class="container">
+      <div class="section-badge"><i class="fa-solid fa-trophy"></i> Hall of Fame Jajanan</div>
+      <h2 class="section-title">Top 3 Jawara Kaki Lima Pilihan Komunitas</h2>
+      <p class="section-subtitle">Tiga tempat paling legendaris dengan cita rasa tiada tanding yang wajib masuk daftar kunjungan kalian!</p>
+
+      <div class="spotlight-grid">
+        <!-- Jawara Cilok -->
+        <div class="spotlight-card card-cilok">
+          <div class="spotlight-medal">🥇 Juara Cilok</div>
+          <img src="images/cilok_1.jpg" alt="Cilok Goreng Setiabudhi" class="spotlight-img">
+          <div class="spotlight-content">
+            <span class="spotlight-cat">🍢 Cilok Khas Bandung</span>
+            <h3>Cilok Goreng Setiabudhi</h3>
+            <p class="spotlight-desc">Tekstur kenyal pas tidak alot, digoreng dengan baluran telur renyah dan disiram saus bumbu kacang pedas manis yang gurih melimpah.</p>
+            <div class="spotlight-meta">
+              <span><i class="fa-solid fa-star"></i> 4.9 (850+ Ulasan)</span>
+              <span><i class="fa-solid fa-rupiah-sign"></i> Rp 10.000 / porsi</span>
+            </div>
+            <button class="btn btn-sm btn-outline spotlight-btn" onclick="focusItemOnMap(1)">
+              <i class="fa-solid fa-location-crosshairs"></i> Lihat di Peta
+            </button>
+          </div>
+        </div>
+
+        <!-- Jawara Batagor -->
+        <div class="spotlight-card card-batagor">
+          <div class="spotlight-medal">🥇 Juara Batagor</div>
+          <img src="images/batagor_1.jpg" alt="Batagor Kingsley" class="spotlight-img">
+          <div class="spotlight-content">
+            <span class="spotlight-cat">🥟 Batagor Legendaris</span>
+            <h3>Batagor Kingsley Bandung</h3>
+            <p class="spotlight-desc">Dibuat dari daging ikan tenggiri asli yang wangi dan tebal, kulit tahu renyah keemasan, dipadu sambal kacang kental dan kecap manis premium.</p>
+            <div class="spotlight-meta">
+              <span><i class="fa-solid fa-star"></i> 4.9 (1.2k+ Ulasan)</span>
+              <span><i class="fa-solid fa-rupiah-sign"></i> Rp 25.000 / porsi</span>
+            </div>
+            <button class="btn btn-sm btn-outline spotlight-btn" onclick="focusItemOnMap(5)">
+              <i class="fa-solid fa-location-crosshairs"></i> Lihat di Peta
+            </button>
+          </div>
+        </div>
+
+        <!-- Jawara Seblak -->
+        <div class="spotlight-card card-seblak">
+          <div class="spotlight-medal">🥇 Juara Seblak</div>
+          <img src="images/seblak_2.jpg" alt="Seblak Sultan Prasmanan" class="spotlight-img">
+          <div class="spotlight-content">
+            <span class="spotlight-cat">🍜 Seblak Kuah Medok</span>
+            <h3>Seblak Sultan Prasmanan</h3>
+            <p class="spotlight-desc">Aroma kencur segar dan kuah rempah merah merona yang medok banget! Pilihan lebih dari 30 topping mulai dari kerupuk mawar, enoki, ceker, hingga suki.</p>
+            <div class="spotlight-meta">
+              <span><i class="fa-solid fa-star"></i> 4.9 (980+ Ulasan)</span>
+              <span><i class="fa-solid fa-rupiah-sign"></i> Rp 15.000 - Rp 25.000</span>
+            </div>
+            <button class="btn btn-sm btn-outline spotlight-btn" onclick="focusItemOnMap(9)">
+              <i class="fa-solid fa-location-crosshairs"></i> Lihat di Peta
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Members Section (Dedicated for School/University Group Assignment) -->
+  <section class="team-section" id="tim-kami">
+    <div class="container">
+      <div class="team-header text-center">
+        <div class="section-badge"><i class="fa-solid fa-graduation-cap"></i> Tugas Kelompok Web Development</div>
+        <h2 class="section-title">Tim Pengembang RateJajanan</h2>
+        <p class="section-subtitle">
+          Proyek website ulasan & peta interaktif jajanan kaki lima ini disusun dan dikembangkan dengan penuh semangat kuliner oleh tim kami:
+        </p>
+      </div>
+
+      <div class="team-grid">
+        <!-- Anggota 1: Umairah Adma Desvita -->
+        <div class="team-card">
+          <div class="avatar-wrap">
+            <img src="img/umai.jpeg" alt="Umairah Adma Desvita" class="team-avatar">
+            <span class="team-badge-icon">👑</span>
+          </div>
+          <h3 class="team-name">Umairah Adma Desvita</h3>
+          <span class="team-role">Project Leader & UI/UX Designer</span>
+          <p class="team-bio">Memimpin koordinasi tim, serta merancang estetika antarmuka website bertema kuliner kaki lima.</p>
+          <div class="fav-snack">
+            <span class="fav-label">Jajanan Favorit:</span>
+            <span class="fav-badge">🥟 Batagor Kingsley</span>
+          </div>
+        </div>
+
+        <!-- Anggota 2: Allika Alifiah Putri -->
+        <div class="team-card">
+          <div class="avatar-wrap">
+            <img src="img/alika.jpeg" alt="Allika Alifiah Putri" class="team-avatar">
+            <span class="team-badge-icon">🍜</span>
+          </div>
+          <h3 class="team-name">Allika Alifiah Putri</h3>
+          <span class="team-role">Culinary Researcher & Content Writer</span>
+          <p class="team-bio">Mengumpulkan data kedai legendaris, menyusun ulasan rasa objektif, serta memvalidasi resep bumbu dan level pedas.</p>
+          <div class="fav-snack">
+            <span class="fav-label">Jajanan Favorit:</span>
+            <span class="fav-badge">🍜 Seblak Sultan Level 4</span>
+          </div>
+        </div>
+
+        <!-- Anggota 3: Rachel Hermansyah -->
+        <div class="team-card">
+          <div class="avatar-wrap">
+            <img src="img/rachel.jpeg" alt="Rachel Hermansyah" class="team-avatar">
+            <span class="team-badge-icon">💻</span>
+          </div>
+          <h3 class="team-name">Rachel Hermansyah</h3>
+          <span class="team-role">Frontend Web Developer</span>
+          <p class="team-bio">Membangun struktur HTML, styling CSS modern responsif.</p>
+          <div class="fav-snack">
+            <span class="fav-label">Jajanan Favorit:</span>
+            <span class="fav-badge">🍢 Cilok Goreng Bumbu Kacang</span>
+          </div>
+        </div>
+
+        <!-- Anggota 4: Lufiana -->
+        <div class="team-card">
+          <div class="avatar-wrap">
+            <img src="img/lufiana.jpeg" alt="Lufiana" class="team-avatar">
+            <span class="team-badge-icon">⭐</span>
+          </div>
+          <h3 class="team-name">Lufiana</h3>
+          <span class="team-role">Quality Assurance & Food Critic</span>
+          <p class="team-bio">Menguji responsivitas website pada ragam perangkat, memeriksa akurasi informasi harga, serta kriteria rating makanan.</p>
+          <div class="fav-snack">
+            <span class="fav-label">Jajanan Favorit:</span>
+            <span class="fav-badge">🥟 Batagor Kuah Hangat</span>
+          </div>
+        </div>
+
+        <!-- Anggota 5: M. Iqbal Firmansyah -->
+        <div class="team-card">
+          <div class="avatar-wrap">
+            <img src="img/iqbal.jpeg" alt="M. Iqbal Firmansyah" class="team-avatar">
+            <span class="team-badge-icon">🗺️</span>
+          </div>
+          <h3 class="team-name">M. Iqbal Firmansyah</h3>
+          <span class="team-role">Interactive Map & Logic Developer</span>
+          <p class="team-bio">Memetakan koordinat titik kuliner, serta merancang sinkronisasi interaktif peta dan kartu ulasan.</p>
+          <div class="fav-snack">
+            <span class="fav-label">Jajanan Favorit:</span>
+            <span class="fav-badge">🍜 Seblak Tulang Jeletet</span>
+          </div>
+        </div>
+
+        <!-- Anggota 6: Asraf Aditya Putra -->
+        <div class="team-card">
+          <div class="avatar-wrap">
+            <img src="img/asraf.jpeg" alt="Asraf Aditya Putra" class="team-avatar">
+            <span class="team-badge-icon">📝</span>
+          </div>
+          <h3 class="team-name">Asraf Aditya Putra</h3>
+          <span class="team-role">Data Storage & Documentation Lead</span>
+          <p class="team-bio">Mengimplementasikan fitur penyimpanan ulasan lokaL, menyusun dokumentasi teknis, dan materi presentasi tugas.</p>
+          <div class="fav-snack">
+            <span class="fav-label">Jajanan Favorit:</span>
+            <span class="fav-badge">🍢 Cilok Gajahan Pedas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal: Detail Ulasan Jajanan -->
+  <div class="modal-overlay" id="detail-modal" aria-hidden="true">
+    <div class="modal-container detail-modal-card">
+      <button class="modal-close-btn" id="close-detail-modal" aria-label="Tutup Detail">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="detail-modal-body" id="detail-modal-content">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Tambah Rekomendasi Jajanan Baru -->
+  <div class="modal-overlay" id="add-modal" aria-hidden="true">
+    <div class="modal-container form-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">✍️</span>
+          <div>
+            <h3>Tambah Rekomendasi Jajanan</h3>
+            <p>Punya tempat cilok, batagor, atau seblak langganan yang enak banget? Bagikan di sini!</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="close-add-modal" aria-label="Tutup Form">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="add-jajanan-form" class="modal-form">
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label for="input-name">Nama Kedai / Gerobak <span class="required">*</span></label>
+            <input type="text" id="input-name" placeholder="Contoh: Cilok Goreng Bumbu Mercon Mang Ujang" required>
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="input-category">Kategori <span class="required">*</span></label>
+            <select id="input-category" required>
+              <option value="cilok">🍢 Cilok</option>
+              <option value="batagor">🥟 Batagor</option>
+              <option value="seblak">🍜 Seblak</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="input-city">Kota <span class="required">*</span></label>
+            <select id="input-city" required>
+              <option value="Bandung">Bandung</option>
+              <option value="Jakarta">Jakarta</option>
+              <option value="Yogyakarta">Yogyakarta</option>
+            </select>
+            <label for="input-city">Kota / Daerah di Indonesia <span class="required">*</span></label>
+            <input type="text" id="input-city" placeholder="Contoh: Bandung, Surabaya, Garut, Malang" required>
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="input-price">Harga per Porsi (Rp) <span class="required">*</span></label>
+            <input type="number" id="input-price" placeholder="Contoh: 15000" min="1000" max="100000" required>
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="input-rating">Rating Rasa (1-5) <span class="required">*</span></label>
+            <select id="input-rating" required>
+              <option value="5.0">5.0 (Sempurna Juara)</option>
+              <option value="4.8" selected>4.8 (Sangat Enak)</option>
+              <option value="4.5">4.5 (Enak Banget)</option>
+              <option value="4.0">4.0 (Standar Enak)</option>
+              <option value="3.5">3.5 (Biasa Saja)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="input-spicy">Level Pedas (0 - 5)</label>
+            <select id="input-spicy">
+              <option value="0">Level 0 (Tidak Pedas)</option>
+              <option value="1">Level 1 (Pedas Santai)</option>
+              <option value="2">Level 2 (Sedang)</option>
+              <option value="3" selected>Level 3 (Pedas Nikmat)</option>
+              <option value="4">Level 4 (Pedas Keringat Dingin)</option>
+              <option value="5">Level 5 (Pedas Mampus 🌶️🌶️🌶️)</option>
+            </select>
+          </div>
+
+          <div class="form-group flex-2">
+            <label for="input-tag">Tag / Keunggulan</label>
+            <input type="text" id="input-tag" placeholder="Contoh: Bumbu Kacang Kental, Kuah Jeruk Limau">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input-address">Alamat Lengkap / Patokan Lokasi <span class="required">*</span></label>
+          <input type="text" id="input-address" placeholder="Contoh: Jl. Cihampelas No. 42 (depan minimarket), Bandung" required>
+        </div>
+
+        <div class="form-group">
+          <label for="input-photo">Link Foto Makanan (URL Opsional)</label>
+          <input type="url" id="input-photo" placeholder="https://images.unsplash.com/... (kosongkan untuk gambar otomatis)">
+        </div>
+
+        <div class="form-group">
+          <label for="input-review">Ulasan / Cerita Rasa <span class="required">*</span></label>
+          <textarea id="input-review" rows="3" placeholder="Ceritakan kenapa jajanan ini wajib dicoba! Bagaimana rasa bumbunya, tekstur cilok/batagornya, atau kuah seblaknya..." required></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="cancel-add-modal">Batal</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Publikasikan Rekomendasi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon">🍢</span>
+          <span class="brand-name">Rate<span class="highlight">Jajanan</span></span>
+        </div>
+        <p class="footer-desc">
+          Platform peta interaktif dan ulasan kuliner kaki lima karya kelompok siswa/mahasiswa kreatif. Mendukung UMKM kuliner Nusantara dengan review jujur dan objektif.
+        </p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Kategori Kuliner</h4>
+        <ul>
+          <li><a href="#filter-bar" onclick="setCategoryFilter('cilok')">🍢 Cilok Kenyal Gurih</a></li>
+          <li><a href="#filter-bar" onclick="setCategoryFilter('batagor')">🥟 Batagor Tenggiri Renyah</a></li>
+          <li><a href="#filter-bar" onclick="setCategoryFilter('seblak')">🍜 Seblak Rempah Kencur</a></li>
+          <li><a href="#rekomendasi-section">🏆 Top 3 Rekomendasi</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-team">
+        <h4>Anggota Tim</h4>
+        <p class="team-names-list">
+          Umairah Adma Desvita • Allika Alifiah Putri • Rachel Hermansyah • Lufiana • M. Iqbal Firmansyah • Asraf Aditya Putra
+        </p>
+        <span class="project-tag">Tugas Kelompok Pemrograman Web 2026</span>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container bottom-flex">
+        <p>&copy; 2026 RateJajanan. Dibuat dengan cinta untuk pecinta kuliner kaki lima Indonesia.</p>
+        <a href="#navbar" class="back-to-top"><i class="fa-solid fa-arrow-up"></i> Kembali ke Atas</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS CDN -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
+  <!-- Custom Application Script -->
+  <script src="script.js"></script>
+</body>
+</html>
